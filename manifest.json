@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "samext",
+  "version": "1.0.0",
+  "description": "Samser Tab Manager - Set shortcuts to manage your tabs",
+  "author": "franco@samser.co",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "close_all_other_tabs": {
+      "suggested_key": {
+        "windows": "Ctrl+A",
+        "mac": "Command+A",
+        "chromeos": "Ctrl+A",
+        "linux": "Ctrl+A"
+      },
+      "description": "Close all tabs except current one"
+    }
+  }
+}
