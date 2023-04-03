@@ -13,11 +13,13 @@ async function removeAllExceptCurrentTab(tabsIds, currentTabId) {
   await chrome.tabs.remove(allTabIdsExceptCurrent);
 }
 
-chrome.commands.onCommand.addListener(async () => {
-  const tab = await getCurrentTab();
-  const allTabs = await getAllTabs();
-  const allTabsIds = allTabs.map(tab => tab.id);
-  await removeAllExceptCurrentTab(allTabsIds, tab.id);
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command == 'close_all_other_tabs') {
+    const tab = await getCurrentTab();
+    const allTabs = await getAllTabs();
+    const allTabsIds = allTabs.map(tab => tab.id);
+    await removeAllExceptCurrentTab(allTabsIds, tab.id);
+  }
 });
 
 
