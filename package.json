@@ -4,7 +4,7 @@
   "description": "This is an extension for Chrome and Brave that enables you to manage your tabs with ease",
   "main": "background.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*'"
   },
   "keywords": [],
   "author": "",
