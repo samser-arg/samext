@@ -10,6 +10,9 @@
     "48": "images/logo48.png",
     "128": "images/logo128.png"
   },
+  "permissions": [
+    "tabs"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -23,6 +26,15 @@
         "mac": "Command+A",
         "chromeos": "Ctrl+A",
         "linux": "Ctrl+A"
+      },
+      "description": "Close all tabs except current one"
+    },
+    "close_duplicated_tabs": {
+      "suggested_key": {
+        "windows": "Ctrl+K",
+        "mac": "Command+K",
+        "chromeos": "Ctrl+K",
+        "linux": "Ctrl+K"
       },
       "description": "Close all tabs except current one"
     }
