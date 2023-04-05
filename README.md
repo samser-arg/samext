@@ -5,3 +5,4 @@ Currently this extension enables you to:
 
 UPCOMING FEATURES:
 - Switch tab based on content search.
+- Close duplicated tabs.
