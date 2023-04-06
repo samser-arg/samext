@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "samext",
   "version": "1.0.0",
-  "description": "Samser Tab Manager - Set shortcuts to manage your tabs",
+  "description": "Samser Tab Manager Extension - Manage your tabs easily",
   "author": "franco@samser.co",
   "icons": {
     "16": "images/logo16.png",
