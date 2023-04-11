@@ -1,3 +1,7 @@
+let last10Tabs = new Array();
+const lastUnique10Tabs = new Set();
+let activeTabPosition = 0;
+
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
   let [tab] = await chrome.tabs.query(queryOptions);
@@ -34,11 +38,46 @@ async function close_all_other_tabs() {
   await removeAllExceptCurrentTab(allTabsIds, tab.id);
 }
 
+async function go_to_previous_tab() {
+  console.log(activeTabPosition, last10Tabs);
+  if (activeTabPosition > 0) {
+    const previousTab = last10Tabs[activeTabPosition - 1];
+    await chrome.tabs.update(previousTab, { active: true });
+    activeTabPosition--;
+  }
+}
+
+async function go_to_next_tab() {
+  console.log(activeTabPosition, last10Tabs);
+  if (activeTabPosition < last10Tabs.length - 1) {
+    const previousTab = last10Tabs[activeTabPosition + 1];
+    await chrome.tabs.update(previousTab, { active: true });
+    activeTabPosition++;
+  }
+}
+
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  if (!lastUnique10Tabs.has(activeInfo.tabId)) {
+    if (last10Tabs.length > 0) {
+      activeTabPosition++;
+    }
+    last10Tabs.push(activeInfo.tabId);
+    lastUnique10Tabs.add(activeInfo.tabId);
+    if (last10Tabs.length > 20) {
+      last10Tabs = last10Tabs.slice(10);
+    }
+  }
+});
+
 chrome.commands.onCommand.addListener(async (command) => {
   if (command == 'close_all_other_tabs') {
     await close_all_other_tabs();
   } else if (command == 'close_duplicated_tabs') {
     await close_duplicated_tabs();
+  } else if (command == 'go_to_previous_tab') {
+    await go_to_previous_tab();
+  } else if (command == 'go_to_next_tab') {
+    await go_to_next_tab();
   }
 });
 

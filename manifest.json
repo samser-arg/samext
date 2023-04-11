@@ -37,6 +37,24 @@
         "linux": "Ctrl+K"
       },
       "description": "Close all tabs except current one"
+    },
+    "go_to_next_tab": {
+      "suggested_key": {
+        "windows": "Alt+N",
+        "mac": "Alt+N",
+        "chromeos": "Alt+N",
+        "linux": "Alt+N"
+      },
+      "description": "Go to the next tab"
+    },
+    "go_to_previous_tab": {
+      "suggested_key": {
+        "windows": "Alt+P",
+        "mac": "Alt+P",
+        "chromeos": "Alt+P",
+        "linux": "Alt+P"
+      },
+      "description": "Close all tabs except current one"
     }
   }
 }
