@@ -4,12 +4,17 @@
   "description": "This is an extension for Chrome and Brave that enables you to manage your tabs with ease",
   "main": "background.js",
   "scripts": {
-    "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*' 'README.md' 'package*'"
+    "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*' 'README.md' 'package*' 'background.js' 'popup.js'",
+    "uglify-background": "uglifyjs --compress --mangle --output background.min.js -- background.js",
+    "uglify-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.37.0"
+  },
+  "dependencies": {
+    "uglify-js": "^3.17.4"
   }
 }

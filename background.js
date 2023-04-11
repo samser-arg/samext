@@ -69,6 +69,11 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   }
 });
 
+chrome.tabs.onRemoved.addListener(async (tabId) => {
+  lastUnique10Tabs.delete(tabId);
+  last10Tabs = last10Tabs.filter(tab => tab !== tabId);
+});
+
 chrome.commands.onCommand.addListener(async (command) => {
   if (command == 'close_all_other_tabs') {
     await close_all_other_tabs();
