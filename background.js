@@ -1,6 +1,5 @@
-let last10Tabs = new Array();
-const lastUnique10Tabs = new Set();
-let activeTabPosition = 0;
+const last10TabsHistory = new Map();
+let currentTab;
 
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -39,40 +38,45 @@ async function close_all_other_tabs() {
 }
 
 async function go_to_previous_tab() {
-  console.log(activeTabPosition, last10Tabs);
-  if (activeTabPosition > 0) {
-    const previousTab = last10Tabs[activeTabPosition - 1];
+  const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  const previousTab = currentTabHistory.previous;
+  console.log(last10TabsHistory);
+  if (previousTab) {
+    chrome.tabs.onActivated.removeListener(trackHistory);
     await chrome.tabs.update(previousTab, { active: true });
-    activeTabPosition--;
+    currentTab = previousTab;
+    chrome.tabs.onActivated.addListener(trackHistory);
   }
 }
 
 async function go_to_next_tab() {
-  console.log(activeTabPosition, last10Tabs);
-  if (activeTabPosition < last10Tabs.length - 1) {
-    const previousTab = last10Tabs[activeTabPosition + 1];
-    await chrome.tabs.update(previousTab, { active: true });
-    activeTabPosition++;
+  const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  const nextTab = currentTabHistory.next;
+  console.log(last10TabsHistory);
+  if (nextTab) {
+    chrome.tabs.onActivated.removeListener(trackHistory);
+    await chrome.tabs.update(nextTab, { active: true });
+    currentTab = nextTab;
+    chrome.tabs.onActivated.addListener(trackHistory);
   }
 }
 
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  if (!lastUnique10Tabs.has(activeInfo.tabId)) {
-    if (last10Tabs.length > 0) {
-      activeTabPosition++;
-    }
-    last10Tabs.push(activeInfo.tabId);
-    lastUnique10Tabs.add(activeInfo.tabId);
-    if (last10Tabs.length > 20) {
-      last10Tabs = last10Tabs.slice(10);
-    }
-  }
-});
+async function trackHistory(activeInfo) {
+  const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  currentTabHistory.next = activeInfo.tabId;
+  last10TabsHistory.set(currentTab, JSON.stringify(currentTabHistory));
+  last10TabsHistory.set(activeInfo.tabId, JSON.stringify({ next: '', previous: currentTab }));
+  console.log(last10TabsHistory);
+  currentTab = activeInfo.tabId;
+}
 
-chrome.tabs.onRemoved.addListener(async (tabId) => {
-  lastUnique10Tabs.delete(tabId);
-  last10Tabs = last10Tabs.filter(tab => tab !== tabId);
-});
+(async function() {
+  const currentTabInfo = await getCurrentTab();
+  currentTab = currentTabInfo.id;
+  last10TabsHistory.set(currentTab, JSON.stringify({ next: '', previous: '' }));
+})();
+
+chrome.tabs.onActivated.addListener(trackHistory);
 
 chrome.commands.onCommand.addListener(async (command) => {
   if (command == 'close_all_other_tabs') {
