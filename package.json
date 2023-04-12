@@ -7,7 +7,7 @@
     "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*' 'README.md' 'package*' 'background.js' 'popup.js'",
     "compress-background": "uglifyjs --compress --mangle --output background.min.js -- background.js",
     "compress-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js",
-    "compress-samext": "npm run uglify-popup & npm run uglify-background"
+    "compress-samext": "npm run compress-popup & npm run compress-background"
   },
   "keywords": [],
   "author": "",
