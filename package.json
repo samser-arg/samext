@@ -5,9 +5,9 @@
   "main": "background.js",
   "scripts": {
     "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*' 'README.md' 'package*' 'background.js' 'popup.js'",
-    "uglify-background": "uglifyjs --compress --mangle --output background.min.js -- background.js",
-    "uglify-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js",
-    "uglify-samext": "npm run uglify-popup & npm run uglify-background"
+    "compress-background": "uglifyjs --compress --mangle --output background.min.js -- background.js",
+    "compress-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js",
+    "compress-samext": "npm run uglify-popup & npm run uglify-background"
   },
   "keywords": [],
   "author": "",
