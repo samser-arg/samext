@@ -78,7 +78,7 @@ async function trackHistory(activeInfo) {
 chrome.tabs.onActivated.addListener(trackHistory);
 
 chrome.tabs.onRemoved.addListener(async (tabId) => {
-  if (currentTab === tabId) {
+  if (last10TabsHistory.has(tabId)) {
     const tabIdHistory = JSON.parse(last10TabsHistory.get(tabId));
     const previousTab = tabIdHistory.previous;
     const nextTab = tabIdHistory.next;
