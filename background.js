@@ -1,4 +1,4 @@
-const last10TabsHistory = new Map();
+const allTabsHistory = new Map();
 let currentTab;
 
 async function getCurrentTab() {
@@ -38,7 +38,7 @@ async function close_all_other_tabs() {
 }
 
 async function go_to_previous_tab() {
-  const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
   const previousTab = currentTabHistory.previous;
   if (previousTab) {
     chrome.tabs.onActivated.removeListener(trackHistory);
@@ -49,7 +49,7 @@ async function go_to_previous_tab() {
 }
 
 async function go_to_next_tab() {
-  const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
   const nextTab = currentTabHistory.next;
   if (nextTab) {
     chrome.tabs.onActivated.removeListener(trackHistory);
@@ -60,11 +60,11 @@ async function go_to_next_tab() {
 }
 
 async function trackHistory(activeInfo) {
-  if (last10TabsHistory.has(currentTab)) {
-    const currentTabHistory = JSON.parse(last10TabsHistory.get(currentTab));
+  if (allTabsHistory.has(currentTab)) {
+    const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
     currentTabHistory.next = activeInfo.tabId;
-    last10TabsHistory.set(currentTab, JSON.stringify(currentTabHistory));
-    last10TabsHistory.set(activeInfo.tabId, JSON.stringify({ next: '', previous: currentTab }));
+    allTabsHistory.set(currentTab, JSON.stringify(currentTabHistory));
+    allTabsHistory.set(activeInfo.tabId, JSON.stringify({ next: '', previous: currentTab }));
   }
   currentTab = activeInfo.tabId;
 }
@@ -72,27 +72,27 @@ async function trackHistory(activeInfo) {
 (async function() {
   const currentTabInfo = await getCurrentTab();
   currentTab = currentTabInfo.id;
-  last10TabsHistory.set(currentTab, JSON.stringify({ next: '', previous: '' }));
+  allTabsHistory.set(currentTab, JSON.stringify({ next: '', previous: '' }));
 })();
 
 chrome.tabs.onActivated.addListener(trackHistory);
 
 chrome.tabs.onRemoved.addListener(async (tabId) => {
-  if (last10TabsHistory.has(tabId)) {
-    const tabIdHistory = JSON.parse(last10TabsHistory.get(tabId));
+  if (allTabsHistory.has(tabId)) {
+    const tabIdHistory = JSON.parse(allTabsHistory.get(tabId));
     const previousTab = tabIdHistory.previous;
     const nextTab = tabIdHistory.next;
     if (previousTab) {
-      const previousTabHistory = JSON.parse(last10TabsHistory.get(previousTab));
+      const previousTabHistory = JSON.parse(allTabsHistory.get(previousTab));
       previousTabHistory.next = nextTab;
-      last10TabsHistory.set(previousTab, JSON.stringify(previousTabHistory));
+      allTabsHistory.set(previousTab, JSON.stringify(previousTabHistory));
     }
     if (nextTab) {
-      const nextTabHistory = JSON.parse(last10TabsHistory.get(nextTab));
+      const nextTabHistory = JSON.parse(allTabsHistory.get(nextTab));
       nextTabHistory.previous = previousTab;
-      last10TabsHistory.set(nextTab, JSON.stringify(nextTabHistory));
+      allTabsHistory.set(nextTab, JSON.stringify(nextTabHistory));
     }
-    last10TabsHistory.delete(tabId);
+    allTabsHistory.delete(tabId);
   }
 });
 
