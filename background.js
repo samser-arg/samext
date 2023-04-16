@@ -97,14 +97,19 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
 });
 
 chrome.commands.onCommand.addListener(async (command) => {
-  if (command == 'close_all_other_tabs') {
-    await close_all_other_tabs();
-  } else if (command == 'close_duplicated_tabs') {
-    await close_duplicated_tabs();
-  } else if (command == 'go_to_previous_tab') {
-    await go_to_previous_tab();
-  } else if (command == 'go_to_next_tab') {
-    await go_to_next_tab();
+  switch (command) {
+    case 'close_all_other_tabs':
+      await close_all_other_tabs();
+      break;
+    case 'close_duplicated_tabs':
+      await close_duplicated_tabs();
+      break;
+    case 'go_to_previous_tab':
+      await go_to_previous_tab();
+      break;
+    case 'go_to_next_tab':
+      await go_to_next_tab();
+      break;
   }
 });
 
