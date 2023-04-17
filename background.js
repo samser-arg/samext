@@ -38,24 +38,30 @@ async function close_all_other_tabs() {
 }
 
 async function go_to_previous_tab() {
-  const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
-  const previousTab = currentTabHistory.previous;
-  if (previousTab) {
-    chrome.tabs.onActivated.removeListener(trackHistory);
-    await chrome.tabs.update(previousTab, { active: true });
-    currentTab = previousTab;
-    chrome.tabs.onActivated.addListener(trackHistory);
+  const { id } = await getCurrentTab();
+  if (allTabsHistory.has(id)) {
+    const currentTabHistory = JSON.parse(allTabsHistory.get(id));
+    const previousTab = currentTabHistory.previous;
+    if (previousTab) {
+      chrome.tabs.onActivated.removeListener(trackHistory);
+      await chrome.tabs.update(previousTab, { active: true });
+      currentTab = previousTab;
+      chrome.tabs.onActivated.addListener(trackHistory);
+    }
   }
 }
 
 async function go_to_next_tab() {
-  const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
-  const nextTab = currentTabHistory.next;
-  if (nextTab) {
-    chrome.tabs.onActivated.removeListener(trackHistory);
-    await chrome.tabs.update(nextTab, { active: true });
-    currentTab = nextTab;
-    chrome.tabs.onActivated.addListener(trackHistory);
+  const { id } = await getCurrentTab();
+  if (allTabsHistory.has(id)) {
+    const currentTabHistory = JSON.parse(allTabsHistory.get(id));
+    const nextTab = currentTabHistory.next;
+    if (nextTab) {
+      chrome.tabs.onActivated.removeListener(trackHistory);
+      await chrome.tabs.update(nextTab, { active: true });
+      currentTab = nextTab;
+      chrome.tabs.onActivated.addListener(trackHistory);
+    }
   }
 }
 
@@ -70,9 +76,8 @@ async function trackHistory(activeInfo) {
 }
 
 (async function() {
-  const currentTabInfo = await getCurrentTab();
-  currentTab = currentTabInfo.id;
-  allTabsHistory.set(currentTab, JSON.stringify({ next: '', previous: '' }));
+  const { id } = await getCurrentTab();
+  allTabsHistory.set(id, JSON.stringify({ next: '', previous: '' }));
 })();
 
 chrome.tabs.onActivated.addListener(trackHistory);
