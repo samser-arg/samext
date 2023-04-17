@@ -77,6 +77,7 @@ async function trackHistory(activeInfo) {
 
 (async function() {
   const { id } = await getCurrentTab();
+  currentTab = id;
   allTabsHistory.set(id, JSON.stringify({ next: '', previous: '' }));
 })();
 
