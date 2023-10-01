@@ -19,10 +19,10 @@
   "commands": {
     "close_all_other_tabs": {
       "suggested_key": {
-        "windows": "Ctrl+A",
-        "mac": "Command+A",
-        "chromeos": "Ctrl+A",
-        "linux": "Ctrl+A"
+        "windows": "Ctrl+O",
+        "mac": "Command+O",
+        "chromeos": "Ctrl+O",
+        "linux": "Ctrl+O"
       },
       "description": "Close all tabs except current one"
     },
