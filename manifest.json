@@ -19,39 +19,29 @@
   "commands": {
     "close_all_other_tabs": {
       "suggested_key": {
-        "windows": "Ctrl+O",
-        "mac": "Command+O",
-        "chromeos": "Ctrl+O",
-        "linux": "Ctrl+O"
+        "default": "Alt+Shift+C",
+        "mac": "Alt+Shift+C"
       },
       "description": "Close all tabs except current one"
     },
     "close_duplicated_tabs": {
       "suggested_key": {
-        "windows": "Ctrl+K",
-        "mac": "Command+K",
-        "chromeos": "Ctrl+K",
-        "linux": "Ctrl+K"
+        "default": "Alt+Shift+D",
+        "mac": "Alt+Shift+D"
       },
-      "description": "Close all tabs except current one"
+      "description": "Close duplicated tabs"
     },
     "go_to_next_tab": {
       "suggested_key": {
-        "windows": "Alt+N",
-        "mac": "Alt+N",
-        "chromeos": "Alt+N",
-        "linux": "Alt+N"
+        "mac": "Alt+Shift+N"
       },
       "description": "Go to the next tab"
     },
     "go_to_previous_tab": {
       "suggested_key": {
-        "windows": "Alt+P",
-        "mac": "Alt+P",
-        "chromeos": "Alt+P",
-        "linux": "Alt+P"
+        "default": "Alt+Shift+P"
       },
-      "description": "Close all tabs except current one"
+      "description": "Go to previous tab"
     }
   }
 }
