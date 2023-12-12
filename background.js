@@ -68,7 +68,16 @@ async function go_to_next_tab() {
 async function trackHistory(activeInfo) {
   if (allTabsHistory.has(currentTab)) {
     const currentTabHistory = JSON.parse(allTabsHistory.get(currentTab));
-    currentTabHistory.next = activeInfo.tabId;
+    if (!currentTabHistory.next) {
+      currentTabHistory.next = activeInfo.tabId;
+    } else {
+      let currentNext = currentTabHistory.next;
+      while (currentNext) {
+        const pivot = currentNext.next;
+        allTabsHistory.delete(currentNext);
+        currentNext = pivot;
+      }
+    }
     allTabsHistory.set(currentTab, JSON.stringify(currentTabHistory));
     allTabsHistory.set(activeInfo.tabId, JSON.stringify({ next: '', previous: currentTab }));
   }
@@ -101,6 +110,28 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
     allTabsHistory.delete(tabId);
   }
 });
+
+chrome.runtime.onInstalled.addListener((reason) => {
+  if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    checkCommandShortcuts();
+  }
+});
+
+function checkCommandShortcuts() {
+  chrome.commands.getAll((commands) => {
+    let missingShortcuts = [];
+
+    for (let { name, shortcut } of commands) {
+      if (shortcut === '') {
+        missingShortcuts.push(name);
+      }
+    }
+
+    if (missingShortcuts.length > 0) {
+      console.log(missingShortcuts);
+    }
+  });
+}
 
 chrome.commands.onCommand.addListener(async (command) => {
   switch (command) {
