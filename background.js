@@ -19,15 +19,27 @@ class TabsHistory {
 
   // Remove by value
   removeByValue(value) {
-    let removedIndexesToTheLeft = []
+    let removedIndexesToTheLeft = 0
+    // remove all elements that has _value_
     this.ids = this.ids.filter((val, idx) => {
       const keepCondition = val !== value;
       if (!keepCondition && idx <= this.currentPosition) {
-        removedIndexesToTheLeft.push(idx);
+        removedIndexesToTheLeft++;
       }
       return keepCondition;
     });
-    this.currentPosition -= removedIndexesToTheLeft.length;
+    this.currentPosition -= removedIndexesToTheLeft;
+    // now remove all _consecutive duplicates_ that are created
+    let removedConsecutiveDuplicatesToTheLeft = 0;
+    this.ids = this.ids.filter((val, idx) => {
+      const keepCondition = idx === 0 || val !== this.ids[idx - 1];
+      if (!keepCondition && idx <= this.currentPosition) {
+        removedConsecutiveDuplicatesToTheLeft++;
+      }
+
+      return keepCondition;
+    })
+    this.currentPosition -= removedConsecutiveDuplicatesToTheLeft;
   }
 
   goToPreviousTab() {
