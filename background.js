@@ -1,61 +1,4 @@
-let allTabsHistory = null;
-
-class TabsHistory {
-  constructor(value) {
-    this.ids = [value];
-    this.currentPosition = 0;
-  }
-
-  // Insert at a given index
-  insert(value) {
-    this.ids =
-      [
-        ...this.ids.slice(0, this.currentPosition + 1),
-        value,
-        ...this.ids.slice(this.currentPosition + 1)
-      ];
-    this.currentPosition++;
-  }
-
-  // Remove by value
-  removeByValue(value) {
-    let removedIndexesToTheLeft = 0
-    // remove all elements that has _value_
-    this.ids = this.ids.filter((val, idx) => {
-      const keepCondition = val !== value;
-      if (!keepCondition && idx <= this.currentPosition) {
-        removedIndexesToTheLeft++;
-      }
-      return keepCondition;
-    });
-    this.currentPosition -= removedIndexesToTheLeft;
-    // now remove all _consecutive duplicates_ that are created
-    let removedConsecutiveDuplicatesToTheLeft = 0;
-    this.ids = this.ids.filter((val, idx) => {
-      const keepCondition = idx === 0 || val !== this.ids[idx - 1];
-      if (!keepCondition && idx <= this.currentPosition) {
-        removedConsecutiveDuplicatesToTheLeft++;
-      }
-
-      return keepCondition;
-    })
-    this.currentPosition -= removedConsecutiveDuplicatesToTheLeft;
-  }
-
-  goToPreviousTab() {
-    if (this.currentPosition > 0) {
-      this.currentPosition--;
-      return this.ids[this.currentPosition];
-    }
-  }
-
-  goToNextTab() {
-    if (this.currentPosition < this.ids.length - 1) {
-      this.currentPosition++;
-      return this.ids[this.currentPosition];
-    }
-  }
-}
+import { TabsHistory } from "./tabs-history.js";
 
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -94,32 +37,47 @@ async function close_all_other_tabs() {
 }
 
 async function go_to_previous_tab() {
-  chrome.tabs.onActivated.removeListener(trackHistory);
-  const previousTab = allTabsHistory.goToPreviousTab();
+  chrome.tabs.onActivated.removeListener(onActivate);
+  const { tabs } = await chrome.storage.local.get('tabs');
+  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
+  const previousTab = tabsHistory.goToPreviousTab();
   await chrome.tabs.update(previousTab, { active: true });
-  chrome.tabs.onActivated.addListener(trackHistory);
+  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  chrome.tabs.onActivated.addListener(onActivate);
 }
 
 async function go_to_next_tab() {
-  chrome.tabs.onActivated.removeListener(trackHistory);
-  const nextTab = allTabsHistory.goToNextTab();
+  chrome.tabs.onActivated.removeListener(onActivate);
+  const { tabs } = await chrome.storage.local.get('tabs');
+  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
+  const nextTab = tabsHistory.goToNextTab();
   await chrome.tabs.update(nextTab, { active: true });
-  chrome.tabs.onActivated.addListener(trackHistory);
+  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  chrome.tabs.onActivated.addListener(onActivate);
 }
 
-function trackHistory(activeInfo) {
-  allTabsHistory.insert(activeInfo.tabId);
+async function onActivate(activeInfo) {
+  const { tabs } = await chrome.storage.local.get('tabs');
+  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
+  tabsHistory.insert(activeInfo.tabId);
+  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
 }
 
-chrome.tabs.onActivated.addListener(trackHistory);
+async function onRemove(tabId) {
+  const { tabs } = await chrome.storage.local.get('tabs');
+  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
+  tabsHistory.removeByValue(tabId);
+  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+}
 
-chrome.tabs.onRemoved.addListener((tabId) => {
-  allTabsHistory.removeByValue(tabId)
-});
+chrome.tabs.onActivated.addListener(onActivate);
+
+chrome.tabs.onRemoved.addListener(onRemove);
 
 self.addEventListener('activate', async () => {
   const { id } = await getCurrentTab();
-  allTabsHistory = new TabsHistory(id)
+  const allTabsHistory = new TabsHistory([id], 0)
+  await chrome.storage.local.set({ 'tabs': allTabsHistory.serialize() });
 })
 
 chrome.runtime.onInstalled.addListener((reason) => {
