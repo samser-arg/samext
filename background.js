@@ -1,4 +1,4 @@
-let allTabsHistory;
+let allTabsHistory = null;
 
 class TabsHistory {
   constructor(value) {
@@ -111,16 +111,16 @@ function trackHistory(activeInfo) {
   allTabsHistory.insert(activeInfo.tabId);
 }
 
-(async function() {
-  const { id } = await getCurrentTab();
-  allTabsHistory = new TabsHistory(id)
-})();
-
 chrome.tabs.onActivated.addListener(trackHistory);
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   allTabsHistory.removeByValue(tabId)
 });
+
+self.addEventListener('activate', async () => {
+  const { id } = await getCurrentTab();
+  allTabsHistory = new TabsHistory(id)
+})
 
 chrome.runtime.onInstalled.addListener((reason) => {
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {

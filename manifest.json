@@ -8,10 +8,11 @@
     "128": "images/logo128.png"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.min.js"
   },
   "action": {
     "default_popup": "popup.html"
