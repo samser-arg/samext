@@ -1,4 +1,7 @@
 import { TabsHistory } from "./tabs-history.js";
+import { Mutex } from "./mutex.js"
+
+const storageMutex = new Mutex();
 
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -38,37 +41,57 @@ async function close_all_other_tabs() {
 
 async function go_to_previous_tab() {
   chrome.tabs.onActivated.removeListener(onActivate);
-  const { tabs } = await chrome.storage.local.get('tabs');
-  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
-  const previousTab = tabsHistory.goToPreviousTab();
-  await chrome.tabs.update(previousTab, { active: true });
-  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  await storageMutex.synchronize(
+    async () => {
+      const tabs = await getTabs();
+      const previousTab = tabs.goToPreviousTab();
+      await chrome.tabs.update(previousTab, { active: true });
+      return saveTabs(tabs);
+    }
+  )
   chrome.tabs.onActivated.addListener(onActivate);
 }
 
 async function go_to_next_tab() {
   chrome.tabs.onActivated.removeListener(onActivate);
-  const { tabs } = await chrome.storage.local.get('tabs');
-  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
-  const nextTab = tabsHistory.goToNextTab();
-  await chrome.tabs.update(nextTab, { active: true });
-  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  await storageMutex.synchronize(
+    async () => {
+      const tabs = await getTabs();
+      const nextTab = tabs.goToNextTab();
+      await chrome.tabs.update(nextTab, { active: true });
+      return saveTabs(tabs);
+    }
+  )
   chrome.tabs.onActivated.addListener(onActivate);
 }
 
-async function onActivate(activeInfo) {
+const getTabs = async () => {
   const { tabs } = await chrome.storage.local.get('tabs');
   const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
-  tabsHistory.insert(activeInfo.tabId);
-  await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  return tabsHistory;
 }
 
-async function onRemove(tabId) {
-  const { tabs } = await chrome.storage.local.get('tabs');
-  const tabsHistory = TabsHistory.deserialize(JSON.parse(tabs).ids, JSON.parse(tabs).currentPosition)
-  tabsHistory.removeByValue(tabId);
+const saveTabs = async (tabsHistory) => {
   await chrome.storage.local.set({ 'tabs': tabsHistory.serialize() });
+  return tabsHistory;
 }
+
+const onActivate = async (activeInfo) =>
+  storageMutex.synchronize(
+    async () => {
+      const tabs = await getTabs();
+      tabs.insert(activeInfo.tabId);
+      await saveTabs(tabs);
+    }
+  )
+
+const onRemove = async (tabId) => storageMutex.synchronize(
+  async () => {
+    const tabs = await getTabs();
+    tabs.removeByValue(tabId);
+    await saveTabs(tabs);
+  }
+)
 
 chrome.tabs.onActivated.addListener(onActivate);
 
