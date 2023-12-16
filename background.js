@@ -9,17 +9,8 @@ async function getCurrentTab() {
   return tab;
 }
 
-async function getAllTabs() {
-  return chrome.tabs.query({ lastFocusedWindow: true });
-}
-
-async function removeAllExceptCurrentTab(tabsIds, currentUserPositionId) {
-  const allTabIdsExceptCurrent = tabsIds.filter(tabId => tabId != currentUserPositionId);
-  await chrome.tabs.remove(allTabIdsExceptCurrent);
-}
-
 async function close_duplicated_tabs() {
-  const allTabs = await getAllTabs();
+  const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
   const uniqUrls = new Set(allTabs.map(tab => tab.url));
   const tabIdsToRemove = [];
   allTabs.map(tab => {
@@ -33,10 +24,17 @@ async function close_duplicated_tabs() {
 }
 
 async function close_all_other_tabs() {
-  const tab = await getCurrentTab();
-  const allTabs = await getAllTabs();
-  const allTabsIds = allTabs.map(tab => tab.id);
-  await removeAllExceptCurrentTab(allTabsIds, tab.id);
+  await storageMutex.synchronize(
+    async () => {
+      const tab = await getCurrentTab();
+      const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
+      const allTabsIds = allTabs.map(tab => tab.id);
+      const allTabIdsExceptCurrent = allTabsIds.filter(tabId => tabId !== currentUserPositionId);
+      await chrome.tabs.remove(allTabIdsExceptCurrent);
+      const tabsHistory = new TabsHistory([tab], 0);
+      await saveTabs(tabsHistory)
+    }
+  )
 }
 
 async function go_to_previous_tab() {
@@ -76,7 +74,7 @@ const saveTabs = async (tabsHistory) => {
   return tabsHistory;
 }
 
-const onActivate = async (activeInfo) =>
+const onActivate = (activeInfo) =>
   storageMutex.synchronize(
     async () => {
       const tabs = await getTabs();
@@ -85,7 +83,7 @@ const onActivate = async (activeInfo) =>
     }
   )
 
-const onRemove = async (tabId) => storageMutex.synchronize(
+const onRemove = (tabId) => storageMutex.synchronize(
   async () => {
     const tabs = await getTabs();
     tabs.removeByValue(tabId);
