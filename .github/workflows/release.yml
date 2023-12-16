@@ -5,7 +5,6 @@ on:
   ## only manually release for now
   workflow_dispatch:
 
-
 jobs:
   release:
     name: Release to Github
