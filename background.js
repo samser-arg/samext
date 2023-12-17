@@ -29,10 +29,10 @@ async function close_all_other_tabs() {
       const tab = await getCurrentTab();
       const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
       const allTabsIds = allTabs.map(tab => tab.id);
-      const allTabIdsExceptCurrent = allTabsIds.filter(tabId => tabId !== currentUserPositionId);
+      const allTabIdsExceptCurrent = allTabsIds.filter(tabId => tabId !== tab.id);
       await chrome.tabs.remove(allTabIdsExceptCurrent);
-      const tabsHistory = new TabsHistory([tab], 0);
-      await saveTabs(tabsHistory)
+      const tabsHistory = new TabsHistory([tab.id], 0);
+      return saveTabs(tabsHistory)
     }
   )
 }
