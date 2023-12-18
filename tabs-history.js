@@ -6,13 +6,15 @@ export class TabsHistory {
 
   // Insert at a given index
   insert(value) {
-    this.ids =
-      [
-        ...this.ids.slice(0, this.currentPosition + 1),
-        value,
-        ...this.ids.slice(this.currentPosition + 1)
-      ];
-    this.currentPosition++;
+    if (value !== this.ids[this.currentPosition]) {
+      this.ids =
+        [
+          ...this.ids.slice(0, this.currentPosition + 1),
+          value,
+          ...this.ids.slice(this.currentPosition + 1)
+        ];
+      this.currentPosition++;
+    }
   }
 
   // Remove by value
