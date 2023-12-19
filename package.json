@@ -1,6 +1,6 @@
 {
   "name": "samext",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This is an extension for Chrome and Brave that enables you to manage your tabs with ease",
   "main": "background.js",
   "scripts": {
