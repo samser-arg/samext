@@ -7,7 +7,11 @@ const config = {
       'assets': ['samext.zip'],
       'message': 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
     }],
-    '@semantic-release/github'
+    ['@semantic-release/github', {
+      'assets': [
+        { 'path': 'samext.zip', 'label': 'Minified zip' }
+      ]
+    }]
   ]
 };
 
