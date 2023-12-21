@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "samext",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Samser Tab Manager Extension - Manage your tabs easily",
   "author": "franco@samser.co",
   "icons": {
