@@ -21,21 +21,19 @@
   "commands": {
     "close_all_other_tabs": {
       "suggested_key": {
-        "default": "Alt+Shift+C",
-        "mac": "Alt+Shift+C"
+        "default": "Alt+Shift+C"
       },
       "description": "Close all tabs except current one"
     },
     "close_duplicated_tabs": {
       "suggested_key": {
-        "default": "Alt+Shift+D",
-        "mac": "Alt+Shift+D"
+        "default": "Alt+Shift+D"
       },
       "description": "Close duplicated tabs"
     },
     "go_to_next_tab": {
       "suggested_key": {
-        "mac": "Alt+Shift+N"
+        "default": "Alt+Shift+N"
       },
       "description": "Go to the next tab"
     },
