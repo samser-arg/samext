@@ -9,6 +9,12 @@ async function getCurrentTab() {
   return tab;
 }
 
+async function toggle_muted_state_tab() {
+  const currentTab = await getCurrentTab();
+  const muted = !currentTab.mutedInfo.muted;
+  await chrome.tabs.update(currentTab, { muted })
+}
+
 async function close_duplicated_tabs() {
   const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
   const uniqUrls = new Set(allTabs.map(tab => tab.url));
@@ -136,6 +142,9 @@ chrome.commands.onCommand.addListener(async (command) => {
       break;
     case 'go_to_next_tab':
       await go_to_next_tab();
+      break;
+    case 'toggle_muted_state_tab':
+      await toggle_muted_state_tab();
       break;
   }
 });

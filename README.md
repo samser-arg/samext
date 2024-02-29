@@ -5,6 +5,7 @@
 - Close duplicated tabs with Alt+Shift+D (Opt+Shift+D in Mac)
 - Go to previous tab with Alt+Shift+P (Opt+Shift+P in Mac)
 - Go to next tab with Alt+Shift+N (Opt+Shift+N in Mac)
+- Mute/Unmute current tab with Alt+Shift+M (Opt+Shift+M in Mac)
 
 ##### UPCOMING FEATURES:
 - Switch tab based on content search.

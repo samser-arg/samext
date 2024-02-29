@@ -25,6 +25,12 @@
       },
       "description": "Close all tabs except current one"
     },
+    "toggle_muted_state_tab": {
+      "suggested_key": {
+        "default": "Alt+Shift+M"
+      },
+      "description": "Mute/unmute current tab"
+    },
     "close_duplicated_tabs": {
       "suggested_key": {
         "default": "Alt+Shift+D"
