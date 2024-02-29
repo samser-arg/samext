@@ -12,7 +12,7 @@ async function getCurrentTab() {
 async function toggle_muted_state_tab() {
   const currentTab = await getCurrentTab();
   const muted = !currentTab.mutedInfo.muted;
-  await chrome.tabs.update(currentTab, { muted })
+  await chrome.tabs.update(currentTab.id, { muted })
 }
 
 async function close_duplicated_tabs() {
