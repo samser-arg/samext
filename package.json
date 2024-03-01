@@ -1,6 +1,7 @@
 {
   "name": "samext",
   "version": "1.0.5",
+  "private": true,
   "description": "This is an extension for Chrome and Brave that enables you to manage your tabs with ease",
   "main": "background.js",
   "scripts": {
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.2.5",
+    "@semantic-release/npm": "^11.0.2",
     "eslint": "^8.37.0",
     "semantic-release": "^22.0.12"
   },
