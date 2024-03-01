@@ -3,9 +3,6 @@ const config = {
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
-    ['@semantic-release/npm', {
-      "nmpPublish": false
-    }],
     ['@semantic-release/git', {
       'assets': ['samext.zip'],
       'message': 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
