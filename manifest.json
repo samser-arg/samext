@@ -19,17 +19,14 @@
     "default_popup": "popup.html"
   },
   "commands": {
+    "toggle_muted_state_tab": {
+      "description": "Mute/unmute current tab"
+    },
     "close_all_other_tabs": {
       "suggested_key": {
         "default": "Alt+Shift+C"
       },
       "description": "Close all tabs except current one"
-    },
-    "toggle_muted_state_tab": {
-      "suggested_key": {
-        "default": "Alt+Shift+M"
-      },
-      "description": "Mute/unmute current tab"
     },
     "close_duplicated_tabs": {
       "suggested_key": {
