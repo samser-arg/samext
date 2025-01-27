@@ -15,6 +15,13 @@ async function toggle_muted_state_tab() {
   await chrome.tabs.update(currentTab.id, { muted })
 }
 
+async function close_all_except_fixed_tabs() {
+  const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
+  const nonPinnedTabs = allTabs.filter(tab => !tab.pinned).map(tab => tab.id)
+
+  await chrome.tabs.remove(nonPinnedTabs);
+}
+
 async function close_duplicated_tabs() {
   const allTabs = await chrome.tabs.query({ lastFocusedWindow: true });
   const uniqUrls = new Set(allTabs.map(tab => tab.url));
@@ -145,6 +152,9 @@ chrome.commands.onCommand.addListener(async (command) => {
       break;
     case 'toggle_muted_state_tab':
       await toggle_muted_state_tab();
+      break;
+    case 'close_all_except_fixed_tabs':
+      await close_all_except_fixed_tabs();
       break;
   }
 });
