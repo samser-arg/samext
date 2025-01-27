@@ -6,6 +6,7 @@
 - Go to previous tab with Alt+Shift+P (Opt+Shift+P in Mac)
 - Go to next tab with Alt+Shift+N (Opt+Shift+N in Mac)
 - Mute/Unmute current tab (you need to map the shortcut yourself. We recommend Alt+Shift+M or Opt+Shift+M in Mac)
+- Close all tabs not pinned/fixed (you need to map the shortcut yourself. We recommend Alt+Shift+F or Opt+Shift+F in Mac)
 
 ##### UPCOMING FEATURES:
 - Switch tab based on content search.

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "samext",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "Samser Tab Manager Extension - Manage your tabs easily",
   "author": "franco@samser.co",
   "icons": {
@@ -19,6 +19,9 @@
     "default_popup": "popup.html"
   },
   "commands": {
+    "close_all_except_fixed_tabs": {
+      "description": "Close all except pinned/fixed"
+    },
     "toggle_muted_state_tab": {
       "description": "Mute/unmute current tab"
     },
