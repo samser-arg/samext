@@ -1,6 +1,6 @@
 {
   "name": "samext",
-  "version": "1.2.3",
+  "version": "1.3.1",
   "private": true,
   "description": "This is an extension for Chrome and Brave that enables you to manage your tabs with ease",
   "main": "background.js",
@@ -8,7 +8,9 @@
     "zip": "zip -r samext.zip . -x '.*' '.\\*' 'node_modules/*' 'README.md' 'package*' 'background.js' 'popup.js'",
     "compress-background": "uglifyjs --compress --mangle --output background.min.js -- background.js",
     "compress-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js",
-    "compress-samext": "npm run compress-popup & npm run compress-background"
+    "compress-samext": "npm run compress-popup & npm run compress-background",
+    "build-safari": "xcrun safari-web-extension-converter . --app-name 'samext-safari' --bundle-identifier 'co.samser.samext.safari' --macos-only --no-open --force --project-location ./safari-build && cd safari-build && xcodebuild -scheme samext-safari -configuration Release",
+    "release-prep": "npm run compress-samext && npm run zip && npm run build-safari"
   },
   "keywords": ["chrome", "extension", "tabs-management"],
   "author": "Tano Argie",
