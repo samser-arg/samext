@@ -12,19 +12,37 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js 18.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
       - name: Install dependencies
         run: npm ci
       - name: Compress files
         run: npm run compress-samext
-      - name: Zip files
+      - name: Zip Chrome extension
         run: npm run zip
+      - name: Build Safari extension
+        run: |
+          # Convert Chrome extension to Safari using Apple's converter
+          xcrun safari-web-extension-converter . \
+            --app-name "samext-safari" \
+            --bundle-identifier "co.samser.samext.safari" \
+            --macos-only \
+            --no-open \
+            --force \
+            --project-location ./safari-build
+          
+          # Build the Safari extension
+          cd safari-build
+          xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
+          
+          # Create Safari app bundle zip
+          cd DerivedData/Build/Products/Release
+          zip -r ../../../../samext-safari.zip samext-safari.app
       - name: Semantic Release
         run: npx semantic-release
         env: 

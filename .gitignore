@@ -1,4 +1,7 @@
 node_modules/
 samext.zip
+samext-safari.zip
 background.min.js
 popup.min.js
+safari-build/
+samext-safari/
