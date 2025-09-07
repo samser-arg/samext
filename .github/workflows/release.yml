@@ -33,11 +33,10 @@ jobs:
             --bundle-identifier "co.samser.samext.safari" \
             --macos-only \
             --no-open \
-            --force \
-            --project-location ./safari-build
+            --force
           
           # Build the Safari extension
-          cd safari-build
+          cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
           
           # Create Safari app bundle zip
