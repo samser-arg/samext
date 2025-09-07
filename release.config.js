@@ -10,7 +10,7 @@ const config = {
     ['@semantic-release/github', {
       'assets': [
         { 'path': 'samext.zip', 'label': 'Chrome Extension (Minified)' },
-        { 'path': 'samext-safari.zip', 'label': 'Safari Extension (macOS App)' }
+        { 'path': 'samext-safari/samext-safari.zip', 'label': 'Safari Extension (macOS App)' }
       ]
     }]
   ]
