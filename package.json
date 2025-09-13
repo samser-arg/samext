@@ -12,12 +12,18 @@
     "build-safari": "xcrun safari-web-extension-converter . --app-name 'samext-safari' --bundle-identifier 'co.samser.samext.safari' --macos-only --no-open --force --project-location ./safari-build && cd safari-build && xcodebuild -scheme samext-safari -configuration Release",
     "release-prep": "npm run compress-samext && npm run zip && npm run build-safari"
   },
-  "keywords": ["chrome", "extension", "tabs-management"],
+  "keywords": [
+    "chrome",
+    "extension",
+    "tabs-management",
+    "safari"
+  ],
   "author": "Tano Argie",
   "license": "ISC",
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.2.5",
+    "@semantic-release/npm": "^11.0.3",
     "eslint": "^8.37.0",
     "semantic-release": "^22.0.12"
   },
