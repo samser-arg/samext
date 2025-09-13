@@ -4,7 +4,7 @@ const config = {
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
     ['@semantic-release/git', {
-      'assets': ['samext.zip', 'samext-safari.app'],
+      'assets': ['samext.zip', 'samext-safari.app', 'package.json', 'package-lock.json'],
       'message': 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
     }],
     ['@semantic-release/github', {
