@@ -38,7 +38,7 @@ jobs:
           cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
           
-          cp DerivedData/Build/Products/Release/samext-safari.app ./samext-safari.app
+          cp -R DerivedData/Build/Products/Release/samext-safari.app ./samext-safari.app
       - name: Semantic Release
         run: npx semantic-release
         env: 
