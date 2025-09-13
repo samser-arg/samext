@@ -1,8 +1,6 @@
-# release action with semantic release
 name: Release
 
 on:
-  ## only manually release for now
   workflow_dispatch:
 
 jobs:
@@ -40,9 +38,9 @@ jobs:
           cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
           
-          strip -x DerivedData/Build/Products/Release/samext-safari.app/Contents/MacOS/samext-safari
           find DerivedData/Build/Products/Release/samext-safari.app -name '.DS_Store' -delete
-          zip -r -9 samext-safari.app.zip DerivedData/Build/Products/Release/samext-safari.app
+          cd DerivedData/Build/Products/Release
+          zip -r -9 samext-safari.app.zip samext-safari.app
       - name: Semantic Release
         run: npx semantic-release
         env: 
