@@ -35,12 +35,9 @@ jobs:
             --no-open \
             --force
           
-          # Build the Safari extension
           cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
           
-          # Create Safari app bundle zip
-          cd DerivedData/Build/Products/Release
           cp DerivedData/Build/Products/Release/samext-safari.app ./samext-safari.app
       - name: Semantic Release
         run: npx semantic-release
