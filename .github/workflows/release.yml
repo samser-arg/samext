@@ -41,7 +41,7 @@ jobs:
           
           # Create Safari app bundle zip
           cd DerivedData/Build/Products/Release
-          zip -r ../../../../samext-safari.zip samext-safari.app
+          cp DerivedData/Build/Products/Release/samext-safari.app ./samext-safari.app
       - name: Semantic Release
         run: npx semantic-release
         env: 
