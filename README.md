@@ -12,11 +12,22 @@
 - Switch tab based on content search.
 
 ### How to install:
-- Manually in Chrome/Chromium-based browsers:
-  - Download latest Release from the [releases](https://github.com/francoserio/samext/releases) page
-  - Extract folder
-  - Go to the extensions page in your browser (ex: `brave://extensions/` for Brave)
-  - Enable Developer Mode
-  - Load unpacked and select folder from Step 2
-- Chrome Web Store
-  - You can add this extension via the Chrome Web store [here](https://chromewebstore.google.com/detail/samext/folkogmaemenfaebhgdnpkminckfppdd)
+- Chrome/Chromium-based browsers
+    - Manually
+        - Download latest Chrome Release from the [releases](https://github.com/tanoargie/samext/releases) page
+        - Extract folder
+        - Go to the extensions page in your browser (ex: `brave://extensions/` for Brave)
+        - Enable Developer Mode
+        - Load unpacked and select folder from Step 2
+
+    - Chrome Web Store
+        - You can add this extension via the Chrome Web store [here](https://chromewebstore.google.com/detail/samext/folkogmaemenfaebhgdnpkminckfppdd)
+
+- Safari
+    - Manually:
+        - Download latest Safari Release from the [releases](https:github.com/tanoargie/samext/releases) page
+        - Extract folder
+        - Move samext-safari to `Applications` directory
+        - Open extension with left click and select Open
+        - Go to `Safari Preferences > Extensions` and enable Samext
+        - Remember to allow unsigned extensions in `Safari Preferences > Advanced`
