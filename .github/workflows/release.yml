@@ -38,9 +38,8 @@ jobs:
           cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
           
-          find DerivedData/Build/Products/Release/samext-safari.app -name '.DS_Store' -delete
           cd DerivedData/Build/Products/Release
-          zip -r -9 samext-safari.app.zip samext-safari.app
+          ditto -c -k --sequesterRsrc --keepParent samext-safari.app ../../../../samext-safari.zip
       - name: Semantic Release
         run: npx semantic-release
         env: 
