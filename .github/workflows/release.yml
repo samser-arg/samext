@@ -13,8 +13,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
         with:
