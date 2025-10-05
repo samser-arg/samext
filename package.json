@@ -10,7 +10,7 @@
     "compress-popup": "uglifyjs --compress --mangle --output popup.min.js -- popup.js",
     "compress-samext": "npm run compress-popup & npm run compress-background",
     "build-safari": "xcrun safari-web-extension-converter dist-safari --app-name 'samext-safari' --bundle-identifier 'co.samser.samext.safari'  --macos-only --no-open --force",
-    "prepare-safari-dir": "mkdir -p dist-safari && cp manifest.json dist-safari/ && cp background.min.js dist-safari/ && cp popup.min.js dist-safari/ && cp popup.html dist-safari/ && cp -R images/logo128.png dist-safari/",
+    "prepare-safari-dir": "mkdir -p dist-safari/images && cp manifest.json dist-safari/ && cp background.min.js dist-safari/ && cp popup.min.js dist-safari/ && cp popup.html dist-safari/ && cp images/logo128.png dist-safari/images/",
     "release-prep": "npm run compress-samext && npm run zip && npm run build-safari"
   },
   "keywords": [
