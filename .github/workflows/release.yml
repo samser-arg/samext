@@ -25,13 +25,8 @@ jobs:
         run: npm run zip
       - name: Build Safari extension
         run: |
-          # Convert Chrome extension to Safari using Apple's converter
-          xcrun safari-web-extension-converter . \
-            --app-name "samext-safari" \
-            --bundle-identifier "co.samser.samext.safari" \
-            --macos-only \
-            --no-open \
-            --force
+          npm run prepare-safari-dir
+          npm run build-safari
           
           cd samext-safari
           xcodebuild -scheme samext-safari -configuration Release -derivedDataPath ./DerivedData
