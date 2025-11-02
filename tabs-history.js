@@ -14,6 +14,13 @@ export class TabsHistory {
           ...this.ids.slice(this.currentPosition + 1)
         ];
       this.currentPosition++;
+      // Limit history to 50 entries
+      if (this.ids.length > 50) {
+        const excess = this.ids.length - 50;
+        this.ids = this.ids.slice(excess);
+        this.currentPosition -= excess;
+        if (this.currentPosition < 0) this.currentPosition = 0;
+      }
     }
   }
 
